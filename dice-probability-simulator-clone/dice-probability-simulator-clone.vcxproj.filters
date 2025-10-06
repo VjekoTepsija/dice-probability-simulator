@@ -18,5 +18,19 @@
     <ClCompile Include="dice-probability-simulator-clone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Simulator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dice.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

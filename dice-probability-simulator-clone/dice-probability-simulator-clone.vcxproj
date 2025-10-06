@@ -124,6 +124,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dice-probability-simulator-clone.cpp" />
+    <ClCompile Include="Dice.cpp" />
+    <ClCompile Include="Simulator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dice.h" />
+    <ClInclude Include="Simulator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
