@@ -14,7 +14,7 @@ int main() {
 	std::cout << "Dice sides, max is 100: \n";
 	int sides = 0;
 	std::cin >> sides;
-	if (sides < 2 && sides > 100) {
+	if (sides < 2 || sides > 100) {
 		std::cerr << "Invalid dice sides.\n";
 		return 1;
 	}
