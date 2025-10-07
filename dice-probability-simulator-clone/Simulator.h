@@ -8,6 +8,8 @@ private:
     int dice;
     int trials;
     int sides;
+    double probability;
+
     std::vector<long long> faceCount;
 
 public:
