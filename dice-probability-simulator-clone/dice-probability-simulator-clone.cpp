@@ -37,5 +37,7 @@ int main() {
     sim.display();
     sim.exportCSV("results.csv");
 
+    sim.InsertionSort();
+
     return 0;
 }
