@@ -48,7 +48,9 @@ void Simulator::InsertionSort() {
 		sortedFaces[j + 1] = key;
 
 	}
+}
 
+void Simulator::displaySorted() const {
 	std::cout << "\nSorted Results (by count):\n";
 	for (int n = 0; n < sortedFaces.size(); n++) {
 		std::cout << "Face: " << sortedFaces[n].first << " Count: " << sortedFaces[n].second << "\n";
