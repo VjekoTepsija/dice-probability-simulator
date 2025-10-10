@@ -8,10 +8,20 @@ Simulator::Simulator(int dice, int trials, int sides)
 	: dice(dice), trials(trials), sides(sides) {
 	faceCount.resize(sides + 1, 0);
 	this->probability = 1.0 / sides;
+
+	n_batches = 0;
+	batch_prob.assign(sides + 1, 0);
+	ba_prob_sq.assign(sides + 1, 0);
 }
 
 long long Simulator::totalRolls() const {
 	return static_cast<long long>(dice) * trials;
+}
+
+void Simulator::clearFaceCount() {
+	for (int i = 0; i < faceCount.size(); i++) {
+		faceCount[i] = 0;
+	}
 }
 
 void Simulator::run(const Dice& d) {
@@ -19,6 +29,37 @@ void Simulator::run(const Dice& d) {
 		for (int j = 0; j < dice; j++) {
 			++faceCount[d.roll()];
 		}
+	}
+}
+
+void Simulator::runBatches(const Dice& d, int batches) {
+	for (int i = 0; i < batches; i++) {
+		clearFaceCount();
+		run(d);
+
+		double total = static_cast<double>(totalRolls());
+		n_batches++;
+
+		for (int face = 1; face < faceCount.size(); face++) {
+			double p = static_cast<double>(faceCount[face]) / total;
+			double delta = p - batch_prob[face];
+			batch_prob[face] += delta / n_batches;
+			double delta2 = p - batch_prob[face];
+			ba_prob_sq[face] += delta * delta2;
+		}
+	}
+}
+
+void Simulator::displayWelford() const {
+	std::cout << "Results for batches: \n";
+	for (int i = 1; i < faceCount.size(); i++) {
+		double variance = ba_prob_sq[i] / (n_batches - 1);
+		double stddev = std::sqrt(variance);
+
+		double ab_error = std::abs(batch_prob[i] - probability);
+		double rel_error = ab_error / probability * 100;
+		std::cout << "Face: " << i << "Probability: " << batch_prob[i] << " StdDev: " << stddev << " Abs Error: " << ab_error
+			<< " Rel Error: " << rel_error << "%\n";
 	}
 }
 

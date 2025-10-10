@@ -8,7 +8,7 @@ public:
 	RandRng(unsigned seed = static_cast<unsigned>(std::time(nullptr))) {
 		std::srand(seed);
 	}
-	int nextInt(int min, int max) {
+	int nextInt(int min, int max) override{
 		if (min > max) {
 			int temp = min;
 			min = max;

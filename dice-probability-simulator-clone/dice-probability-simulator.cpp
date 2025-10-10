@@ -15,7 +15,7 @@ int main() {
 	int sides = 0;
 	std::cin >> sides;
 	if (sides < 2 || sides > 100) {
-		std::cerr << "Invalid number of sides. Setting sides to 6\n";
+		std::cerr << "Invalid number of sides. Defaulting to 6 sides.\n";
 		sides = 6;
 	}
 
@@ -35,6 +35,16 @@ int main() {
 	int trials = 0;
 	if (!(std::cin >> trials) || trials <= 0) {
 		std::cerr << "Invalid number of trials.\n";
+		return 1;
+	}
+
+	//Batch input
+
+	std::cout << "Batch size(Rounds of Trials):\n";
+	int batch = 0;
+	std::cin >> batch;
+	if (batch < 1) {
+		std::cerr << "Invalid batch size.\n";
 		return 1;
 	}
 
@@ -64,6 +74,7 @@ int main() {
 	}
 	else {
 		std::cerr << "Invalid choice for RNG type.\n";
+		return 2;
 	}
 
 	// Create Dice and Simulator instances
@@ -72,13 +83,17 @@ int main() {
 	Simulator sim(dice, trials, sides);
 
 	// Run simulation, display and export results
-
-	sim.run(d);
-	sim.display();
-	sim.exportCSV("results.csv");
-
-	sim.InsertionSort();
-	sim.displaySorted();
+	if (batch <= 1) {
+		sim.run(d);
+		sim.display();
+		sim.InsertionSort();
+		sim.displaySorted();
+		sim.exportCSV("results.csv");
+	}
+	else {
+		sim.runBatches(d, batch);
+		sim.displayWelford();
+	}
 
 	return 0;
 }
