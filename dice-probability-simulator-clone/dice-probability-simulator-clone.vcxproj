@@ -123,12 +123,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dice-probability-simulator-clone.cpp" />
+    <ClCompile Include="dice-probability-simulator.cpp" />
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="Simulator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dice.h" />
+    <ClInclude Include="IRng.h" />
+    <ClInclude Include="Mt19937Rng.h" />
+    <ClInclude Include="RandRng.h" />
     <ClInclude Include="Simulator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

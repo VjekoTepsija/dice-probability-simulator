@@ -1,11 +1,13 @@
 #pragma once
-#include <cstdlib>
+#include "IRng.h"
+#include <memory>
 
 class Dice {
 private:
-    int sides;
+	int sides;
+	std::unique_ptr<IRng> rng;
 
 public:
-    Dice(int s = 6);
-    int roll() const;
+	explicit Dice(int s, std::unique_ptr<IRng> r);
+	int roll() const;
 };

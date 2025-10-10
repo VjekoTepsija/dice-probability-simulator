@@ -2,12 +2,12 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 Simulator::Simulator(int dice, int trials, int sides)
 	: dice(dice), trials(trials), sides(sides) {
 	faceCount.resize(sides + 1, 0);
 	this->probability = 1.0 / sides;
-
 }
 
 long long Simulator::totalRolls() const {

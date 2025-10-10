@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dice-probability-simulator-clone.cpp">
+    <ClCompile Include="dice-probability-simulator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Simulator.cpp">
@@ -30,6 +30,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Simulator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRng.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RandRng.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mt19937Rng.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
