@@ -6,7 +6,27 @@
 #include "RandRng.h"
 #include "Mt19937Rng.h"
 
+#include <chrono>
 
+void runSim(Simulator& sim, Dice& d, int batches) {
+	if (batches == 1) {
+		sim.run(d);
+		sim.display();
+		sim.InsertionSort();
+		sim.displaySorted();
+
+		int export_choice = 0;
+		std::cout << "Enter export choice (0 for no export, 1 for export): ";
+		std::cin >> export_choice;
+		if (export_choice == 1) {
+			sim.exportCSV("Results.csv");
+		}
+	}
+	else if (batches > 1) {
+		sim.runBatches(d, batches);
+		sim.displayWelford();
+	}
+}
 int main() {
 
 	// Dice sides input
@@ -48,52 +68,64 @@ int main() {
 		return 1;
 	}
 
-	// Choose RNG type
+	Simulator sim(dice, trials, sides);
+	auto rng = std::unique_ptr<IRng>();
 
-	std::cout << "1. for Rand() rng, 2. for Mersenne Twister rng\n";
+	std::cout << "1. RandRng(Random)\n2. RandRng(Fixed)\n3. Mt19937Rng(Random)\n4.Mt19937Rng(Fixed)\n5. Mt19937Rng Parallel Threads.\nChoose: \n";
 	int choice = 0;
 	std::cin >> choice;
 
-	auto rng = std::unique_ptr<IRng>();
-
-	if (choice == 1) {
-		std::cout << "Using Rand() rng, choose 1 for random, or input your seed for fixed: \n";
-		std::cin >> choice;
-		if (choice == 1)
-			rng = std::make_unique<RandRng>();
-		else
-			rng = std::make_unique<RandRng>(choice);
+	switch (choice) {
+	case 1: {
+		rng = std::make_unique<RandRng>();
+		Dice d(sides, std::move(rng));
+		runSim(sim, d, batch);
+		break;
 	}
-	else if (choice == 2) {
-		std::cout << "Using mt19937() rng, choose 1 for random, or input seed for fixed: \n";
-		std::cin >> choice;
-		if (choice == 1)
-			rng = std::make_unique<Mt19937Rng>();
-		else
-			rng = std::make_unique<Mt19937Rng>(choice);
+	case 2: {
+		std::cout << "Input seed:\n";
+		int seed;
+		std::cin >> seed;
+		rng = std::make_unique<RandRng>(seed);
+		Dice d(sides, std::move(rng));
+		runSim(sim, d, batch);
+		break;
 	}
-	else {
-		std::cerr << "Invalid choice for RNG type.\n";
-		return 2;
+	case 3: {
+		rng = std::make_unique<Mt19937Rng>();
+		Dice d(sides, std::move(rng));
+		runSim(sim, d, batch);
+		break;
 	}
-
-	// Create Dice and Simulator instances
-
-	Dice d(sides, std::move(rng));
-	Simulator sim(dice, trials, sides);
-
-	// Run simulation, display and export results
-	if (batch <= 1) {
-		sim.run(d);
-		sim.display();
-		sim.InsertionSort();
-		sim.displaySorted();
-		sim.exportCSV("results.csv");
+	case 4: {
+		std::cout << "Input seed:\n";
+		int seed;
+		std::cin >> seed;
+		rng = std::make_unique<Mt19937Rng>(seed);
+		Dice d(sides, std::move(rng));
+		runSim(sim, d, batch);
+		break;
 	}
-	else {
-		sim.runBatches(d, batch);
+	case 5: {
+		int threads = 0;
+		std::cout << "Number of threads:\n";
+		std::cin >> threads;
+		if (threads < 1) {
+			std::cerr << "Invalid number of threads.\n";
+			return 1;
+		}
+		auto clock = std::chrono::steady_clock::now();
+		sim.runBatchesParallel(batch, threads);
+		auto clock_end = std::chrono::steady_clock::now();
 		sim.displayWelford();
-	}
 
+		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(clock_end - clock).count();
+		std::cout << "Elapsed time: " << elapsed << " ms\n";
+		return 0;
+	}
+	default:
+		std::cerr << "Invalid choice.\n";
+		return 1;
+	}
 	return 0;
 }
